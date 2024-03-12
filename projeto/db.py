@@ -1,21 +1,21 @@
 import psycopg2
-from mainteste import *
+from projeto.Main import *
 
 db_params = {
-    'dbname':'postgres',
-    'user':'postgres',
-    'password':'!Efraim032427',
-    'host':'db.lbewbxclzsyynrgrwfll.supabase.co',
+    'dbname':'',
+    'user':'',
+    'password':'',
+    'host':'',
     'port':'5432'
 }
 
-def Cadastrar_clientes(codigo,cpf,nome,endereco,cep,bairro,telefone,descricao, numero):
+def Cadastrar_clientes(codigo,cpf,nome,endereco,bairro,cep,telefone,descricao, numero):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
     try:
         insert_query = "INSERT INTO clientes(codigo,cpf,nome,endereco,bairro,cep,telefone,descricao, numero) VALUES(%s, %s, %s, %s,%s,%s,%s,%s, %s)"
-        cursor.execute(insert_query,(codigo,cpf,nome,endereco,cep,bairro,telefone,descricao,numero))
+        cursor.execute(insert_query,(codigo,cpf,nome,endereco,bairro,cep,telefone,descricao,numero))
         conn.commit()
         print("Cliente cadastrado com sucesso!")    
     except (Exception, psycopg2.Error) as error:
@@ -30,7 +30,7 @@ def Buscar_ClienteEnd(endereco):
     cursor = conn.cursor()
     
 
-    select_query = "SELECT * FROM clientes WHERE endereco = %s"
+    select_query = "SELECT codigo,cpf,nome,endereco,bairro,cep,telefone,descricao, numero FROM clientes WHERE endereco = %s"
     cursor.execute(select_query,(endereco,))
     nome = cursor.fetchone()
 
@@ -75,7 +75,7 @@ def check_value(endereco):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
-    check = "SELECT * FROM clientes WHERE endereco = %s"
+    check = "SELECT codigo,cpf,nome,endereco,bairro,cep,telefone,descricao, numero FROM clientes WHERE endereco = %s"
     cursor.execute(check, (endereco,))
     result = cursor.fetchone()
     conn.close()
