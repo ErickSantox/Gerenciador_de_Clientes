@@ -286,8 +286,8 @@ class App(ctk.CTk):
         btn_submit = ctk.CTkButton(self,text="Cadastrar Cliente".upper(),command=submit,fg_color="RoyalBlue",hover_color="Navy",height=50,font=("Century Gothic",16))
         btn_clear = ctk.CTkButton(self,text="Limpar Campos".upper(),command=clear,fg_color="#555",hover_color="#333",height=50,font=("Century Gothic",16))
         btn_search = ctk.CTkButton(self,text="buscar".upper(),command=BuscarEndereco,fg_color="RoyalBlue",hover_color="Navy",height=50,font=("Century Gothic",16))
-        btn_CostumerRow = ctk.CTkButton(self,text="Lista de Clientes".upper(),command=BuscarEndereco,fg_color="RoyalBlue",hover_color="Navy",height=50,font=("Century Gothic",16))
-        btn_delete = ctk.CTkButton(self,text="Deletar".upper(),command=delete,fg_color="Red",hover_color="Maroon",height=50,font=("Century Gothic",16))
+        btn_CostumerRow = ctk.CTkButton(self,text="Lista de Clientes".upper(),fg_color="RoyalBlue",hover_color="Navy",height=50,font=("Century Gothic",16))
+        btn_delete = ctk.CTkButton(self,text="Deletar".upper(),fg_color="Red",hover_color="Maroon",height=50,font=("Century Gothic",16))
         
 
 
@@ -325,8 +325,9 @@ class App(ctk.CTk):
         btn_submit.place(x=50,y=520)
         btn_search.place(x=245,y=520)
         #btn_delete.place(x=413,y=520)
-        btn_clear.place(x=395,y=520)
-        btn_CostumerRow.place(x=450,y=520)
+        btn_CostumerRow.place(x=395,y=520)
+        btn_clear.place(x=570,y=520)
+
 
 if __name__ == "__main__":
     App = App()
