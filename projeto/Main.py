@@ -45,23 +45,27 @@ class App(ctk.CTk):
             cpf = cpf_value.get()
             nome = nome_value.get()
             endereco = end_value.get()
-            cep = cep_value.get()
+            numero = num_value.get()
             bairro = bairro_value.get()
+            cep = cep_value.get()
             telefone = tell_value.get()
             descricao = descrição_entry.get(0.0,END)
-            numero = num_value.get()
             
 
-            if (codigo =="" or cpf =="" or nome =="" or endereco =="" or cep =="" or bairro =="" or telefone =="" or numero ==""):
+            if (codigo =="" or nome =="" or endereco =="" or numero == ""or bairro =="" or cep =="" or telefone ==""):
                 messagebox.showerror("Erro","Preencha todos os campos!")
             else:
-                Cadastrar_clientes(codigo,cpf,nome,endereco,cep,bairro,telefone,descricao,numero)
+                Cadastrar_clientes(codigo,cpf,nome,endereco,numero,bairro,cep,telefone,descricao)
                 messagebox.showinfo("System","Dados salvos com sucesso!")
+
+            clear();
     #---------------------------------------------------------------------------------------------------------------
         def BuscarEndereco():
-            endereco = end_value.get()
-            if check_value(endereco):
-                cliente_encontrado = Buscar_ClienteEnd(endereco)
+            EnderecoCliente = end_value.get()
+            NCasaCliente = num_value.get()
+
+            if check_value(EnderecoCliente,NCasaCliente):
+                cliente_encontrado = Buscar_ClienteEnd(EnderecoCliente,NCasaCliente)
                 if cliente_encontrado:
                     open_second_screen(cliente_encontrado)
                 else:
@@ -77,10 +81,11 @@ class App(ctk.CTk):
             frame2 = ctk.CTkFrame(second_screen,width=783,height=70, corner_radius=0, bg_color="RoyalBlue", fg_color="RoyalBlue")
             frame2.pack()
             frame2.place(x=0,y=10)
+            
             #extraindo valores do cliente encontrado
-            codigo, cpf, nome, endereco, cep, bairro, telefone, descricao, numero = cliente
+            IdCliente, CodCliente, CpfCliente, NomeCliente, EnderecoCliente, NCasaCliente, BairroCliente, CepCliente , TellCliente , Descricao = cliente
 
-            #front
+            #FRONT-END
             #LABELS
 
             lb_codigo_2 = ctk.CTkLabel(second_screen,text="COD", font=("Century Gothic bold",16),text_color= ["#000","#fff"])
@@ -103,17 +108,18 @@ class App(ctk.CTk):
             lb_numero_2.pack()
             lb_numero_2.place(x=410,y=170)
 
-            lb_cep_2 = ctk.CTkLabel(second_screen,text="CEP:", font=("Century Gothic bold",16),text_color= ["#000","#fff"])
-            lb_cep_2.pack()
-            lb_cep_2.place(x=470,y=170)
 
             lb_bairro_2 = ctk.CTkLabel(second_screen,text="Bairro:", font=("Century Gothic bold",16),text_color= ["#000","#fff"])
             lb_bairro_2.pack()
             lb_bairro_2.place(x=620,y=170)
 
+            lb_cep_2 = ctk.CTkLabel(second_screen,text="CEP:", font=("Century Gothic bold",16),text_color= ["#000","#fff"])
+            lb_cep_2.pack()
+            lb_cep_2.place(x=470,y=170)
+
             lb_telefone_2 = ctk.CTkLabel(second_screen,text="Telefone:", font=("Century Gothic bold",16),text_color= ["#000","#fff"])
             lb_telefone_2.pack()
-            lb_telefone_2.place(x=510,y=90)
+            lb_telefone_2.place(x=530,y=90)
 
             lb_descricao_2 = ctk.CTkLabel(second_screen,text="Descrição:", font=("Century Gothic bold",16),text_color= ["#000","#fff"])
             lb_descricao_2.pack()
@@ -122,62 +128,71 @@ class App(ctk.CTk):
 
 
             #entrys
-            entry_tela2_cod = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=40)
+            entry_tela2_cod = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=45)
             entry_tela2_cod.pack()
-            entry_tela2_cod.insert(0,codigo)
+            entry_tela2_cod.insert(0,CodCliente)
             entry_tela2_cod.place(x=10,y=120)
+            entry_tela2_cod.configure(state="readonly")
+
             
             entry_tela2_cpf = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=130)
             entry_tela2_cpf.pack()
-            entry_tela2_cpf.insert(0,cpf)
+            entry_tela2_cpf.insert(0,CpfCliente)
             entry_tela2_cpf.place(x=60,y=120)
+            entry_tela2_cpf.configure(state="readonly")
 
-            entry_tela2_nome = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=300)
+
+            entry_tela2_nome = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=320)
             entry_tela2_nome.pack()
-            entry_tela2_nome.insert(0,nome)
+            entry_tela2_nome.insert(0,NomeCliente)
             entry_tela2_nome.place(x=200,y=120)
+            entry_tela2_nome.configure(state="readonly")
 
             entry_tela2_endereco = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=390)
             entry_tela2_endereco.pack()
-            entry_tela2_endereco.insert(0,endereco)
+            entry_tela2_endereco.insert(0,EnderecoCliente)
             entry_tela2_endereco.place(x=10,y=200)
+            entry_tela2_endereco.configure(state="readonly")
 
             entry_tela2_numero = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=50)
             entry_tela2_numero.pack()
-            entry_tela2_numero.insert(0,numero)
+            entry_tela2_numero.insert(0,NCasaCliente)
             entry_tela2_numero.place(x=410,y=200)
+            entry_tela2_numero.configure(state="readonly")
 
-            entry_tela2_cep = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=140)
-            entry_tela2_cep.pack()
-            entry_tela2_cep.insert(0,bairro)
-            entry_tela2_cep.place(x=470,y=200)
 
             entry_tela2_bairro = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=130)
             entry_tela2_bairro.pack()
-            entry_tela2_bairro.insert(0,cep)
+            entry_tela2_bairro.insert(0,BairroCliente)
             entry_tela2_bairro.place(x=620,y=200)
+            entry_tela2_bairro.configure(state="readonly")
+
+            entry_tela2_cep = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=140)
+            entry_tela2_cep.pack()
+            entry_tela2_cep.insert(0,CepCliente)
+            entry_tela2_cep.place(x=470,y=200)
+            entry_tela2_cep.configure(state="readonly")
 
             entry_tela2_telefone = ctk.CTkEntry(second_screen,font=("Century Gothic",16),width=140)
             entry_tela2_telefone.pack()
-            entry_tela2_telefone.insert(0,telefone)
-            entry_tela2_telefone.place(x=510,y=120)
+            entry_tela2_telefone.insert(0,TellCliente)
+            entry_tela2_telefone.place(x=530,y=120)
 
-            entry_tela2_descricao = ctk.CTkTextbox(second_screen,font=("Century Gothic",16),width=500,height=150)
+
+            entry_tela2_descricao =ctk.CTkTextbox(second_screen,width=500,height=150,font=("Century Gothic",16),fg_color="transparent",border_color="#aaa",border_width=2)
+            """entry_tela2_descricao = ctk.CTkTextbox(second_screen,font=("Century Gothic",16),width=500,height=150)"""
             entry_tela2_descricao.pack()
-            entry_tela2_descricao.insert("2.0",descricao)
+            entry_tela2_descricao.insert("2.0",Descricao)
             entry_tela2_descricao.place(x=10,y=300)
 
             def alterar():
-                novo_endereço = entry_tela2_endereco.get()
-                novo_bairro = entry_tela2_bairro.get()
-                novo_cep = entry_tela2_cep.get()
                 novo_telefone = entry_tela2_telefone.get()
-                novo_numero = entry_tela2_numero.get()
-                nova_descrição = entry_tela2_descricao.get("1.0","end-1c")
+                nova_descricao = entry_tela2_descricao.get("1.0","end-1c")
                 
-                end_cliente = end_value.get()
+                EnderecoCliente = end_value.get()
+                NCasaCliente = num_value.get()
 
-                Alterar_dados_cliente(end_cliente,novo_endereço,novo_bairro,novo_cep,novo_telefone,novo_numero,nova_descrição)
+                Alterar_dados_cliente(novo_telefone,nova_descricao,EnderecoCliente,NCasaCliente)
                 messagebox.showinfo("System","Dados do cliente alterados com sucesso!")
 
 
@@ -191,12 +206,13 @@ class App(ctk.CTk):
             
     #---------------------------------------------------------------------------------------------------------------
         def delete():
-            endereço = end_value.get()
+            EnderecoCliente = end_value.get()
+            NCasaCliente = num_value.get()
 
-            if (endereço ==""):
+            if (EnderecoCliente ==""):
                 messagebox.showerror("Erro","Código não encontrado!")
             else:
-                Excluir_cliente(endereço)
+                Excluir_cliente(EnderecoCliente,NCasaCliente)
                 messagebox.showinfo("System","Cliente Excluído com sucesso!".upper())
 
         def clear():
@@ -270,6 +286,7 @@ class App(ctk.CTk):
         btn_submit = ctk.CTkButton(self,text="Cadastrar Cliente".upper(),command=submit,fg_color="RoyalBlue",hover_color="Navy",height=50,font=("Century Gothic",16))
         btn_clear = ctk.CTkButton(self,text="Limpar Campos".upper(),command=clear,fg_color="#555",hover_color="#333",height=50,font=("Century Gothic",16))
         btn_search = ctk.CTkButton(self,text="buscar".upper(),command=BuscarEndereco,fg_color="RoyalBlue",hover_color="Navy",height=50,font=("Century Gothic",16))
+        btn_CostumerRow = ctk.CTkButton(self,text="Lista de Clientes".upper(),command=BuscarEndereco,fg_color="RoyalBlue",hover_color="Navy",height=50,font=("Century Gothic",16))
         btn_delete = ctk.CTkButton(self,text="Deletar".upper(),command=delete,fg_color="Red",hover_color="Maroon",height=50,font=("Century Gothic",16))
         
 
@@ -309,15 +326,7 @@ class App(ctk.CTk):
         btn_search.place(x=245,y=520)
         #btn_delete.place(x=413,y=520)
         btn_clear.place(x=395,y=520)
-
-        
-        
-
-        
-
-
-
-
+        btn_CostumerRow.place(x=450,y=520)
 
 if __name__ == "__main__":
     App = App()

@@ -1,21 +1,22 @@
 import psycopg2
-from projeto.Main import *
+from Main import *
 
 db_params = {
-    'dbname':'',
-    'user':'',
-    'password':'',
-    'host':'',
+    'dbname':'Clientes',
+    'user':'postgres',
+    'password':'study',
+    'host':'localhost',
     'port':'5432'
+    
 }
 
-def Cadastrar_clientes(codigo,cpf,nome,endereco,bairro,cep,telefone,descricao, numero):
+def Cadastrar_clientes(CodCliente,CpfCliente,NomeCliente,EnderecoCliente,NCasaCliente,BairroCliente,CepCliente,TellCliente, Descricao):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
     try:
-        insert_query = "INSERT INTO clientes(codigo,cpf,nome,endereco,bairro,cep,telefone,descricao, numero) VALUES(%s, %s, %s, %s,%s,%s,%s,%s, %s)"
-        cursor.execute(insert_query,(codigo,cpf,nome,endereco,bairro,cep,telefone,descricao,numero))
+        insert_query = "INSERT INTO clientesedna(CodCliente, CpfCliente, NomeCliente, EnderecoCliente, NCasaCliente, BairroCliente, CepCliente , TellCliente , Descricao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(insert_query,(CodCliente,CpfCliente,NomeCliente,EnderecoCliente,NCasaCliente,BairroCliente,CepCliente,TellCliente, Descricao))
         conn.commit()
         print("Cliente cadastrado com sucesso!")    
     except (Exception, psycopg2.Error) as error:
@@ -25,13 +26,13 @@ def Cadastrar_clientes(codigo,cpf,nome,endereco,bairro,cep,telefone,descricao, n
         cursor.close()
         conn.close()
 
-def Buscar_ClienteEnd(endereco):
+def Buscar_ClienteEnd(EnderecoCliente,NCasaCliente):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
     
 
-    select_query = "SELECT codigo,cpf,nome,endereco,bairro,cep,telefone,descricao, numero FROM clientes WHERE endereco = %s"
-    cursor.execute(select_query,(endereco,))
+    select_query = "SELECT IdCliente, CodCliente, CpfCliente, NomeCliente, EnderecoCliente, NCasaCliente, BairroCliente, CepCliente , TellCliente , Descricao FROM clientesedna WHERE EnderecoCliente = %s AND NCasaCliente = %s "
+    cursor.execute(select_query,(EnderecoCliente,NCasaCliente))
     nome = cursor.fetchone()
 
     cursor.close()
@@ -39,13 +40,13 @@ def Buscar_ClienteEnd(endereco):
 
     return nome
 
-def Alterar_dados_cliente(endereco,novo_endereco,novo_bairro,novo_cep,novo_telefone,novo_numero,nova_descricao):
+def Alterar_dados_cliente(novo_telefone,nova_descricao,EnderecoCliente,NCasaCliente):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
     try:
-        update_query = "UPDATE clientes SET endereco = %s, bairro = %s, cep = %s, telefone = %s, numero = %s, descricao = %s WHERE endereco = %s"
-        cursor.execute(update_query, (novo_endereco,novo_bairro,novo_cep,novo_telefone,novo_numero,nova_descricao,endereco))
+        update_query = "UPDATE clientesedna SET TellCliente =  %s, Descricao = %s WHERE EnderecoCliente = %s AND NCasaCliente = %s "
+        cursor.execute(update_query, (novo_telefone,nova_descricao,EnderecoCliente,NCasaCliente))
         conn.commit()
     except (Exception, psycopg2.Error) as error:
         conn.rollback()
@@ -54,13 +55,14 @@ def Alterar_dados_cliente(endereco,novo_endereco,novo_bairro,novo_cep,novo_telef
         cursor.close()
         conn.close()
 
-def Excluir_cliente(endereco):
+def Excluir_cliente(EnderecoCliente,NCasaCliente):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
     try:
-        delete_query = "DELETE FROM clientes WHERE endereco = %s"
-        cursor.execute(delete_query, (endereco,))
+        """DELETE FROM clientesedna WHERE EnderecoCliente = 'casa do caralho' AND NCasaCliente = '120A'"""
+        delete_query = "DELETE FROM clientesedna WHERE EnderecoCliente = %s AND NCasaCliente = %s"
+        cursor.execute(delete_query, (EnderecoCliente,NCasaCliente,))
         conn.commit()
         print("Cliente excluído com sucesso")
     except (Exception, psycopg2.Error)as error:
@@ -71,25 +73,23 @@ def Excluir_cliente(endereco):
         conn.close()
 
 #Verificação
-def check_value(endereco):
+def check_value(EnderecoCliente,NCasaCliente):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
-    check = "SELECT codigo,cpf,nome,endereco,bairro,cep,telefone,descricao, numero FROM clientes WHERE endereco = %s"
-    cursor.execute(check, (endereco,))
+    check = "SELECT IdCliente, CodCliente, CpfCliente, NomeCliente, EnderecoCliente, NCasaCliente, BairroCliente, CepCliente , TellCliente , Descricao FROM clientesedna WHERE EnderecoCliente = %s AND NCasaCliente = %s"
+    cursor.execute(check, (EnderecoCliente,NCasaCliente,))
     result = cursor.fetchone()
     conn.close()
     return result is not None
 
-
 #puxar resultado do banco 
-
 def busca_TDClientes():
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
     
 
-    cursor.execute("SELECT codigo, cpf, nome, endereco, cep, bairro, telefone, descricao, numero FROM clientes")
+    cursor.execute("SELECT IdCliente, CodCliente, CpfCliente, NomeCliente, EnderecoCliente, NCasaCliente, BairroCliente, CepCliente , TellCliente , Descricao FROM clientesedna ")
     
     resultado = cursor.fetchone()
 
